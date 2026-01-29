@@ -1,0 +1,26 @@
+@page "/inventory"
+@inject HttpClient Http
+
+<h3>Inventory Items</h3>
+<ul>
+    @foreach (var item in items)
+    {
+        <li>@item.Name - Quantity: @item.Quantity</li>
+    }
+</ul>
+
+@code {
+    private List<Item> items = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        items = await Http.GetFromJsonAsync<List<Item>>("api/inventory");
+    }
+
+    public class Item
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int Quantity { get; set; }
+    }
+}
